@@ -111,6 +111,7 @@
           <span class="tool-chip mcp">MCP</span>
           <span class="tool-chip appium">Appium</span>
           <span class="tool-chip playwright">Playwright</span>
+          <span class="tool-chip allure">Allure Report</span>
           <span class="tool-chip rest">REST Assured</span>
         </div>
       </div>
@@ -146,6 +147,13 @@
             <em>semantic role</em><em>alarm grid</em><em>repaired</em>
           </div>
         </div>
+        <div class="allure-card">
+          <span>Allure Report</span>
+          <strong>Playwright execution insight</strong>
+          <div class="allure-bars" aria-hidden="true">
+            <em style="--bar: 76%"></em><em style="--bar: 58%"></em><em style="--bar: 86%"></em>
+          </div>
+        </div>
         <div class="api-panel">
           <div class="panel-dots"><span></span><span></span><span></span></div>
           <div class="api-row"><strong>POST</strong><span>/payments/validate</span><em>200</em></div>
@@ -161,7 +169,7 @@
         <div class="performance-copy">
           <h2 id="performance-title">Load insights wired directly into delivery pipelines.</h2>
           <p>
-            Performance testing is treated as an engineering signal, not a late release gate: JMeter and k6 suites track response time, throughput, error rate, and SLA risk across APIs, dashboards, payment flows, and cloud services.
+            Performance testing is treated as an engineering signal, not a late release gate: JMeter and k6 suites feed Grafana and ELK dashboards to track response time, throughput, error rate, logs, and SLA risk across APIs, dashboards, payment flows, and cloud services.
           </p>
           <div class="perf-summary" aria-label="Performance testing summary">
             <div><strong>5k+</strong><span>Concurrent user models</span></div>
@@ -183,6 +191,20 @@
             <div>
               <strong>Grafana k6</strong>
               <p>API performance checks, cloud-ready scripts, threshold gates</p>
+            </div>
+          </div>
+          <div class="perf-card tool-card grafana-card">
+            <span class="tool-logo grafana-logo" aria-hidden="true">GR</span>
+            <div>
+              <strong>Grafana Dashboards</strong>
+              <p>Live SLA panels for latency, throughput, saturation, and errors</p>
+            </div>
+          </div>
+          <div class="perf-card tool-card elk-card">
+            <span class="tool-logo elk-logo" aria-hidden="true">ELK</span>
+            <div>
+              <strong>ELK Stack</strong>
+              <p>Log analytics, trace correlation, anomaly signals, and defect context</p>
             </div>
           </div>
           <div class="chart-card response-chart">

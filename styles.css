@@ -371,6 +371,7 @@ p {
 .tool-chip.mcp::before { background: linear-gradient(135deg, var(--teal), var(--blue)); }
 .tool-chip.appium::before { background: var(--rose); }
 .tool-chip.playwright::before { background: var(--blue); }
+.tool-chip.allure::before { background: linear-gradient(135deg, #22b8a7, #97d36b); }
 .tool-chip.rest::before { background: var(--teal); }
 
 .lab-visual {
@@ -407,6 +408,7 @@ p {
 .phone,
 .web-window,
 .mcp-card,
+.allure-card,
 .api-panel {
   position: absolute;
   border: 1px solid rgba(255, 255, 255, 0.16);
@@ -599,6 +601,48 @@ p {
     rgba(255, 255, 255, 0.08);
 }
 
+.allure-card {
+  left: 9%;
+  bottom: 170px;
+  width: min(35%, 245px);
+  padding: 14px;
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(34, 184, 167, 0.38), rgba(151, 211, 107, 0.24)),
+    rgba(255, 255, 255, 0.08);
+}
+
+.allure-card span {
+  display: block;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.allure-card strong {
+  display: block;
+  margin-top: 6px;
+  color: #ffffff;
+  font-size: 0.98rem;
+  line-height: 1.2;
+}
+
+.allure-bars {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: end;
+  gap: 8px;
+  height: 52px;
+  margin-top: 12px;
+}
+
+.allure-bars em {
+  display: block;
+  height: var(--bar);
+  border-radius: 8px 8px 2px 2px;
+  background: linear-gradient(180deg, #97d36b, #22b8a7);
+}
+
 .locator-line {
   display: flex;
   flex-wrap: wrap;
@@ -749,6 +793,14 @@ p {
 
 .k6-logo {
   background: linear-gradient(135deg, #7d64ff, #2f2a8c);
+}
+
+.grafana-logo {
+  background: linear-gradient(135deg, #f05a28, #f9a03f);
+}
+
+.elk-logo {
+  background: linear-gradient(135deg, #00bfb3, #f04e98 52%, #f5a623);
 }
 
 .tool-card strong,
@@ -1393,9 +1445,26 @@ ul {
   .mcp-card {
     left: 128px;
     right: 16px;
-    bottom: 152px;
+    bottom: 150px;
     width: auto;
     padding: 12px;
+  }
+
+  .allure-card {
+    left: 16px;
+    bottom: 150px;
+    width: 104px;
+    padding: 10px;
+  }
+
+  .allure-card strong {
+    font-size: 0.72rem;
+  }
+
+  .allure-bars {
+    gap: 4px;
+    height: 34px;
+    margin-top: 8px;
   }
 
   .locator-line {
