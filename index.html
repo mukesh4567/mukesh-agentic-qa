@@ -20,9 +20,9 @@
     <nav class="nav" aria-label="Primary navigation">
       <a href="#expertise">Expertise</a>
       <a href="#lab">AI Lab</a>
-      <a href="#cv-builder">CV Builder</a>
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
+      <a href="#cv-builder">CV Builder</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -246,68 +246,6 @@
       </div>
     </section>
 
-    <section class="section cv-builder-section" id="cv-builder" aria-labelledby="cv-builder-title">
-      <div class="cv-builder-head">
-        <div>
-          <div class="section-kicker">Free CV Builder</div>
-          <h2 id="cv-builder-title">Create a polished CV from your existing resume.</h2>
-        </div>
-        <div class="auth-panel">
-          <div class="auth-user" data-auth-user>
-            <span>Sign in required</span>
-            <strong>Google or Gmail account</strong>
-          </div>
-          <div class="auth-actions">
-            <button class="btn primary" type="button" data-google-login>Sign In With Google</button>
-            <button class="btn secondary hidden" type="button" data-google-logout>Sign Out</button>
-          </div>
-        </div>
-      </div>
-
-      <div class="cv-app-grid">
-        <div class="cv-upload-panel">
-          <label class="upload-zone" for="resume-upload">
-            <input id="resume-upload" type="file" accept=".pdf,.docx,.html,.htm,.txt,image/*" data-resume-upload disabled>
-            <span>Upload PDF, Word, HTML, text, or image resume</span>
-            <strong data-upload-file>Login to start</strong>
-          </label>
-          <div class="template-picker" aria-label="CV template selection">
-            <button class="template-option is-selected" type="button" data-template="executive">Executive</button>
-            <button class="template-option" type="button" data-template="modern">Modern</button>
-            <button class="template-option" type="button" data-template="compact">Compact</button>
-          </div>
-          <textarea class="resume-textarea" data-resume-text placeholder="Parsed resume text will appear here. You can edit before generating." disabled></textarea>
-          <div class="cv-actions">
-            <button class="btn primary" type="button" data-generate-cv disabled>Generate CV</button>
-            <button class="btn secondary" type="button" data-download-cv disabled>Download PDF</button>
-            <button class="btn secondary" type="button" data-download-html disabled>Download HTML</button>
-          </div>
-          <p class="cv-status" data-cv-status>Sign in to use the free CV builder.</p>
-        </div>
-
-        <div class="cv-preview-panel">
-          <div class="cv-preview-toolbar">
-            <span data-cv-template-label>Executive Template</span>
-            <strong data-cv-word-count>0 words</strong>
-          </div>
-          <article class="cv-document template-executive" data-cv-preview>
-            <header>
-              <span>Preview</span>
-              <h3>Your generated CV will appear here</h3>
-              <p>Upload a resume, review the extracted content, then generate a cleaner template.</p>
-            </header>
-          </article>
-        </div>
-      </div>
-
-      <div class="usage-dashboard hidden" data-admin-dashboard>
-        <div class="usage-card"><strong data-total-users>0</strong><span>Total users</span></div>
-        <div class="usage-card"><strong data-total-generations>0</strong><span>CV generations</span></div>
-        <div class="usage-card"><strong data-total-downloads>0</strong><span>Downloads</span></div>
-        <div class="usage-card wide"><strong data-last-activity>--</strong><span>Latest activity</span></div>
-      </div>
-    </section>
-
     <section class="section timeline-section" id="experience" aria-labelledby="experience-title">
       <div class="section-kicker">Experience</div>
       <h2 id="experience-title">Career Timeline</h2>
@@ -451,6 +389,69 @@
         </div>
       </div>
     </section>
+
+    <section class="section cv-builder-section" id="cv-builder" aria-labelledby="cv-builder-title">
+      <div class="cv-builder-head">
+        <div>
+          <div class="section-kicker">Free CV Builder</div>
+          <h2 id="cv-builder-title">Create a polished CV from your existing resume.</h2>
+        </div>
+        <div class="auth-panel">
+          <div class="auth-user" data-auth-user>
+            <span>Sign in required</span>
+            <strong>Google or Gmail account</strong>
+          </div>
+          <div class="auth-actions">
+            <button class="btn primary" type="button" data-google-login>Sign In With Google</button>
+            <button class="btn secondary hidden" type="button" data-google-logout>Sign Out</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cv-app-grid">
+        <div class="cv-upload-panel">
+          <label class="upload-zone" for="resume-upload">
+            <input id="resume-upload" type="file" accept=".pdf,.docx,.html,.htm,.txt,image/*" data-resume-upload disabled>
+            <span>Upload PDF, Word, HTML, text, or image resume</span>
+            <strong data-upload-file>Login to start</strong>
+          </label>
+          <div class="template-picker" aria-label="CV template selection">
+            <button class="template-option is-selected" type="button" data-template="executive">Executive</button>
+            <button class="template-option" type="button" data-template="modern">Modern</button>
+            <button class="template-option" type="button" data-template="compact">Compact</button>
+          </div>
+          <textarea class="resume-textarea" data-resume-text placeholder="Parsed resume text will appear here. You can edit before generating." disabled></textarea>
+          <div class="cv-actions">
+            <button class="btn primary" type="button" data-generate-cv disabled>Generate CV</button>
+            <button class="btn secondary" type="button" data-download-cv disabled>Download PDF</button>
+            <button class="btn secondary" type="button" data-download-html disabled>Download HTML</button>
+          </div>
+          <p class="cv-status" data-cv-status>Sign in to use the free CV builder.</p>
+        </div>
+
+        <div class="cv-preview-panel">
+          <div class="cv-preview-toolbar">
+            <span data-cv-template-label>Executive Template</span>
+            <strong data-cv-word-count>0 words</strong>
+          </div>
+          <article class="cv-document template-executive" data-cv-preview>
+            <header>
+              <span>Preview</span>
+              <h3>Your generated CV will appear here</h3>
+              <p>Upload a resume, review the extracted content, then generate a cleaner template.</p>
+            </header>
+          </article>
+        </div>
+      </div>
+
+      <div class="usage-dashboard hidden" data-admin-dashboard>
+        <div class="usage-card"><strong data-total-users>0</strong><span>Total users</span></div>
+        <div class="usage-card"><strong data-total-generations>0</strong><span>CV generations</span></div>
+        <div class="usage-card"><strong data-total-downloads>0</strong><span>Downloads</span></div>
+        <div class="usage-card wide"><strong data-last-activity>--</strong><span>Latest activity</span></div>
+      </div>
+    </section>
+
 
     <section class="contact" id="contact" aria-labelledby="contact-title">
       <div>
