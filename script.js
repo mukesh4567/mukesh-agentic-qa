@@ -3,6 +3,9 @@ const navLinks = Array.from(document.querySelectorAll(".nav a"));
 const sections = navLinks
   .map((link) => document.querySelector(link.getAttribute("href")))
   .filter(Boolean);
+const revealTargets = document.querySelectorAll(
+  ".section, .metrics div, .feature, .timeline-item, .mini-item, .highlight-list p, .credential-grid > div"
+);
 
 function updateHeader() {
   header.classList.toggle("is-scrolled", window.scrollY > 40);
@@ -28,6 +31,22 @@ document.querySelector("[data-copy-email]")?.addEventListener("click", async (ev
     window.location.href = `mailto:${email}`;
   }
 });
+
+if ("IntersectionObserver" in window) {
+  revealTargets.forEach((target) => target.classList.add("reveal"));
+
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.14 });
+
+  revealTargets.forEach((target) => revealObserver.observe(target));
+} else {
+  revealTargets.forEach((target) => target.classList.add("is-visible"));
+}
 
 window.addEventListener("scroll", () => {
   updateHeader();
