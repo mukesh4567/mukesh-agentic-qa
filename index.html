@@ -144,6 +144,74 @@
       </div>
     </section>
 
+    <section class="section performance-section" aria-labelledby="performance-title">
+      <div class="section-kicker">Performance & CI/CD</div>
+      <div class="performance-grid">
+        <div class="performance-copy">
+          <h2 id="performance-title">Load insights wired directly into delivery pipelines.</h2>
+          <p>
+            Performance testing is treated as an engineering signal, not a late release gate: JMeter and k6 suites track response time, throughput, error rate, and SLA risk across APIs, dashboards, payment flows, and cloud services.
+          </p>
+          <div class="perf-summary" aria-label="Performance testing summary">
+            <div><strong>5k+</strong><span>Concurrent user models</span></div>
+            <div><strong>30+</strong><span>Microservices under validation</span></div>
+            <div><strong>SLA</strong><span>Threshold-based quality gates</span></div>
+          </div>
+        </div>
+
+        <div class="perf-dashboard" aria-label="Performance testing graph summary">
+          <div class="perf-card tool-card jmeter-card">
+            <span class="tool-logo jmeter-logo" aria-hidden="true">JM</span>
+            <div>
+              <strong>Apache JMeter</strong>
+              <p>Load, stress, endurance, volume, Jenkins scheduled runs</p>
+            </div>
+          </div>
+          <div class="perf-card tool-card k6-card">
+            <span class="tool-logo k6-logo" aria-hidden="true">k6</span>
+            <div>
+              <strong>Grafana k6</strong>
+              <p>API performance checks, cloud-ready scripts, threshold gates</p>
+            </div>
+          </div>
+          <div class="chart-card response-chart">
+            <div class="chart-head"><strong>Response Time</strong><span>p95 ms</span></div>
+            <div class="bar-chart" aria-hidden="true">
+              <span style="--bar: 38%"></span>
+              <span style="--bar: 52%"></span>
+              <span style="--bar: 46%"></span>
+              <span style="--bar: 64%"></span>
+              <span style="--bar: 72%"></span>
+              <span style="--bar: 58%"></span>
+              <span style="--bar: 44%"></span>
+            </div>
+          </div>
+          <div class="chart-card throughput-chart">
+            <div class="chart-head"><strong>Throughput</strong><span>req/min</span></div>
+            <svg viewBox="0 0 320 120" role="img" aria-label="Throughput trend graph">
+              <polyline points="8,92 54,78 100,84 146,52 192,60 238,34 312,28"></polyline>
+              <path d="M8 92 L54 78 L100 84 L146 52 L192 60 L238 34 L312 28 L312 120 L8 120 Z"></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="pipeline-board" aria-label="CI/CD pipeline examples">
+        <div class="pipeline-card jenkins-pipeline">
+          <div class="pipeline-title"><span></span><strong>Jenkins Pipeline</strong></div>
+          <div class="pipeline-flow">
+            <em>Checkout</em><em>Build</em><em>API Tests</em><em>JMeter</em><em>Report</em>
+          </div>
+        </div>
+        <div class="pipeline-card gitlab-pipeline">
+          <div class="pipeline-title"><span></span><strong>GitLab CI/CD</strong></div>
+          <div class="pipeline-flow">
+            <em>Merge</em><em>Docker</em><em>k6</em><em>Quality Gate</em><em>Deploy</em>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section timeline-section" id="experience" aria-labelledby="experience-title">
       <div class="section-kicker">Experience</div>
       <h2 id="experience-title">Career Timeline</h2>
@@ -245,7 +313,8 @@
         <div>
           <h3>Delivery</h3>
           <ul>
-            <li>Jenkins, GitHub Actions, Docker, Kubernetes, AWS</li>
+            <li>Jenkins Pipeline, GitHub Actions, GitLab CI/CD</li>
+            <li>Docker, Kubernetes, AWS, OpenShift</li>
             <li>Jira, Xray, TestRail, qTest, SonarQube</li>
             <li>MySQL, MongoDB, GitHub, GitLab, Bitbucket</li>
           </ul>

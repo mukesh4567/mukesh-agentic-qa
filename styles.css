@@ -533,6 +533,232 @@ p {
   font-weight: 800;
 }
 
+.performance-section {
+  background: #ffffff;
+}
+
+.performance-grid {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(440px, 1.22fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: start;
+}
+
+.performance-copy p {
+  max-width: 620px;
+  margin-top: 20px;
+  font-size: 1.02rem;
+}
+
+.perf-summary {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.perf-summary div {
+  min-height: 104px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8faf9;
+}
+
+.perf-summary strong {
+  display: block;
+  color: var(--teal-dark);
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.perf-summary span {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+
+.perf-dashboard {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.perf-card,
+.chart-card,
+.pipeline-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #f8faf9;
+  box-shadow: 0 12px 34px rgba(16, 24, 32, 0.06);
+}
+
+.tool-card {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 14px;
+  align-items: center;
+  min-height: 130px;
+  padding: 18px;
+}
+
+.tool-logo {
+  display: inline-grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  border-radius: 16px;
+  color: #ffffff;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.jmeter-logo {
+  background: linear-gradient(135deg, #d94a2b, #f28b39);
+}
+
+.k6-logo {
+  background: linear-gradient(135deg, #7d64ff, #2f2a8c);
+}
+
+.tool-card strong,
+.chart-head strong,
+.pipeline-title strong {
+  color: var(--ink);
+}
+
+.tool-card p {
+  margin-top: 6px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.chart-card {
+  min-height: 190px;
+  padding: 18px;
+}
+
+.chart-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.chart-head span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.bar-chart {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  align-items: end;
+  gap: 8px;
+  height: 122px;
+}
+
+.bar-chart span {
+  display: block;
+  height: var(--bar);
+  min-height: 28px;
+  border-radius: 8px 8px 2px 2px;
+  background: linear-gradient(180deg, var(--amber), var(--teal));
+  animation: barPulse 2.8s ease-in-out infinite;
+}
+
+.bar-chart span:nth-child(even) {
+  animation-delay: 420ms;
+}
+
+.throughput-chart svg {
+  width: 100%;
+  height: 122px;
+}
+
+.throughput-chart polyline {
+  fill: none;
+  stroke: var(--teal);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 7;
+  filter: drop-shadow(0 8px 12px rgba(0, 138, 131, 0.28));
+}
+
+.throughput-chart path {
+  fill: rgba(0, 138, 131, 0.12);
+}
+
+.pipeline-board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
+.pipeline-card {
+  padding: 18px;
+  overflow: hidden;
+}
+
+.pipeline-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.pipeline-title span {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+
+.jenkins-pipeline .pipeline-title span {
+  background: #d33833;
+}
+
+.gitlab-pipeline .pipeline-title span {
+  background: #fc6d26;
+}
+
+.pipeline-flow {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.pipeline-flow em {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: var(--graphite);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-style: normal;
+  font-weight: 800;
+  text-align: center;
+}
+
+.pipeline-flow em:not(:last-child)::after {
+  position: absolute;
+  top: 50%;
+  right: -8px;
+  width: 8px;
+  height: 2px;
+  background: var(--amber);
+  content: "";
+}
+
 .timeline-section {
   background: #ffffff;
 }
@@ -781,6 +1007,17 @@ ul {
   }
 }
 
+@keyframes barPulse {
+  0%, 100% {
+    opacity: 0.78;
+    transform: scaleY(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scaleY(1);
+  }
+}
+
 @media (max-width: 980px) {
   .site-header {
     align-items: flex-start;
@@ -801,6 +1038,7 @@ ul {
 
   .section-grid,
   .lab-section,
+  .performance-grid,
   .contact {
     grid-template-columns: 1fr;
   }
@@ -853,8 +1091,96 @@ ul {
   .feature-grid,
   .skill-columns,
   .highlight-list,
-  .credential-grid {
+  .credential-grid,
+  .pipeline-board {
     grid-template-columns: 1fr;
+  }
+
+  .performance-section {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
+  .performance-copy p {
+    font-size: 0.98rem;
+  }
+
+  .perf-summary {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .perf-summary div {
+    min-height: 92px;
+    padding: 12px 8px;
+  }
+
+  .perf-summary strong {
+    font-size: 1.18rem;
+  }
+
+  .perf-summary span {
+    font-size: 0.68rem;
+  }
+
+  .perf-dashboard {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tool-card {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    min-height: auto;
+    padding: 14px;
+  }
+
+  .tool-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    font-size: 0.82rem;
+  }
+
+  .tool-card p {
+    display: -webkit-box;
+    overflow: hidden;
+    font-size: 0.72rem;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .chart-card {
+    min-height: 152px;
+    padding: 14px;
+  }
+
+  .chart-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+    margin-bottom: 10px;
+  }
+
+  .bar-chart,
+  .throughput-chart svg {
+    height: 94px;
+  }
+
+  .pipeline-flow {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 5px;
+  }
+
+  .pipeline-flow em {
+    min-height: 38px;
+    padding: 0 3px;
+    overflow: hidden;
+    font-size: 0.55rem;
+    line-height: 1.12;
+  }
+
+  .pipeline-flow em:not(:last-child)::after {
+    content: none;
   }
 
   .lab-visual {

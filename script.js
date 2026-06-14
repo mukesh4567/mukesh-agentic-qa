@@ -4,7 +4,7 @@ const sections = navLinks
   .map((link) => document.querySelector(link.getAttribute("href")))
   .filter(Boolean);
 const revealTargets = document.querySelectorAll(
-  ".section, .metrics div, .feature, .timeline-item, .mini-item, .highlight-list p, .credential-grid > div"
+  ".section, .metrics div, .feature, .perf-card, .chart-card, .pipeline-card, .timeline-item, .mini-item, .highlight-list p, .credential-grid > div"
 );
 
 function updateHeader() {
