@@ -1,0 +1,148 @@
+rules_version = '2';
+service cloud.firestore {
+  // ===============================================================
+  // Assumed Data Model
+  // ===============================================================
+  //
+  // Collection: users
+  // Document ID: Firebase Auth uid
+  // Fields:
+  //   - uid: string (required, immutable) - Firebase Auth uid
+  //   - email: string (required) - signed-in user email
+  //   - displayName: string (optional) - Google profile display name
+  //   - photoURL: string (optional) - Google profile image URL
+  //   - createdAt: timestamp (optional on update) - first observed timestamp
+  //   - lastSeenAt: timestamp (optional) - latest authenticated visit
+  //   - lastLoginAt: timestamp (optional) - latest explicit Google sign-in
+  //   - lastUsedAt: timestamp (optional) - latest CV generate/download action
+  //   - loginCount: number (optional) - login event counter
+  //   - generationCount: number (optional) - CV generation counter
+  //   - downloadCount: number (optional) - CV download counter
+  //   - lastTemplate: string (optional) - last selected CV template
+  //   - lastFileType: string (optional) - last uploaded file MIME/extension
+  //
+  // Collection: users/{userId}/events
+  // Document ID: auto-generated
+  // Fields:
+  //   - uid: string (required, immutable) - Firebase Auth uid
+  //   - email: string (required) - signed-in user email
+  //   - type: string (required) - login/generate/download_html/download_pdf
+  //   - createdAt: timestamp (required) - event timestamp
+  //   - template: string (optional) - selected CV template
+  //   - fileType: string (optional) - uploaded file MIME/extension
+  //
+  // Uploaded resume files and parsed resume content are intentionally not stored.
+  // ===============================================================
+
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        request.auth.token.email == "mukeshmangal2007@gmail.com";
+    }
+
+    function userFields() {
+      return [
+        "uid",
+        "email",
+        "displayName",
+        "photoURL",
+        "createdAt",
+        "lastSeenAt",
+        "lastLoginAt",
+        "lastUsedAt",
+        "loginCount",
+        "generationCount",
+        "downloadCount",
+        "lastTemplate",
+        "lastFileType"
+      ];
+    }
+
+    function eventFields() {
+      return ["uid", "email", "type", "createdAt", "template", "fileType"];
+    }
+
+    function isValidEmail(email) {
+      return email is string &&
+        email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidOptionalString(data, field, maxSize) {
+      return !(field in data) ||
+        (data[field] is string && data[field].size() <= maxSize);
+    }
+
+    function isValidOptionalCount(data, field) {
+      return !(field in data) ||
+        (data[field] is number && data[field] >= 0 && data[field] <= 1000000);
+    }
+
+    function isValidUser(userId, data) {
+      return data.keys().hasOnly(userFields()) &&
+        data.keys().hasAll(["uid", "email"]) &&
+        data.uid == userId &&
+        data.uid == request.auth.uid &&
+        isValidEmail(data.email) &&
+        data.email == request.auth.token.email &&
+        isValidOptionalString(data, "displayName", 120) &&
+        isValidOptionalString(data, "photoURL", 500) &&
+        isValidOptionalString(data, "lastTemplate", 40) &&
+        isValidOptionalString(data, "lastFileType", 120) &&
+        isValidOptionalCount(data, "loginCount") &&
+        isValidOptionalCount(data, "generationCount") &&
+        isValidOptionalCount(data, "downloadCount");
+    }
+
+    function isValidUserUpdate(userId, data) {
+      return data.keys().hasOnly(userFields()) &&
+        data.uid == resource.data.uid &&
+        data.uid == userId &&
+        data.uid == request.auth.uid &&
+        data.email == resource.data.email &&
+        isValidOptionalString(data, "displayName", 120) &&
+        isValidOptionalString(data, "photoURL", 500) &&
+        isValidOptionalString(data, "lastTemplate", 40) &&
+        isValidOptionalString(data, "lastFileType", 120) &&
+        isValidOptionalCount(data, "loginCount") &&
+        isValidOptionalCount(data, "generationCount") &&
+        isValidOptionalCount(data, "downloadCount");
+    }
+
+    function isValidEvent(userId, data) {
+      return data.keys().hasOnly(eventFields()) &&
+        data.keys().hasAll(["uid", "email", "type", "createdAt"]) &&
+        data.uid == userId &&
+        data.uid == request.auth.uid &&
+        data.email == request.auth.token.email &&
+        data.type in ["login", "generate", "download_html", "download_pdf"] &&
+        isValidOptionalString(data, "template", 40) &&
+        isValidOptionalString(data, "fileType", 120);
+    }
+
+    match /users/{userId} {
+      allow get: if isOwner(userId) || isAdmin();
+      allow list: if isAdmin();
+      allow create: if isOwner(userId) && isValidUser(userId, request.resource.data);
+      allow update: if isOwner(userId) && isValidUserUpdate(userId, request.resource.data);
+      allow delete: if false;
+
+      match /events/{eventId} {
+        allow get, list: if isOwner(userId) || isAdmin();
+        allow create: if isOwner(userId) && isValidEvent(userId, request.resource.data);
+        allow update, delete: if false;
+      }
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

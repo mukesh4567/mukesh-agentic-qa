@@ -938,6 +938,258 @@ p {
   content: "";
 }
 
+.cv-builder-section {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(189, 132, 55, 0.13), transparent 28%),
+    linear-gradient(135deg, #ffffff 0%, #f2f7f6 100%);
+}
+
+.cv-builder-head {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(280px, 420px);
+  gap: 28px;
+  align-items: end;
+}
+
+.auth-panel,
+.cv-upload-panel,
+.cv-preview-panel,
+.usage-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 16px 45px rgba(16, 24, 32, 0.08);
+}
+
+.auth-panel {
+  padding: 18px;
+}
+
+.auth-user {
+  display: grid;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.auth-user span,
+.cv-preview-toolbar span,
+.usage-card span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.auth-user strong {
+  color: var(--ink);
+}
+
+.auth-actions,
+.cv-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.cv-app-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 0.85fr) minmax(360px, 1.15fr);
+  gap: 18px;
+  margin-top: 34px;
+}
+
+.cv-upload-panel,
+.cv-preview-panel {
+  padding: 20px;
+}
+
+.upload-zone {
+  display: grid;
+  min-height: 132px;
+  place-items: center;
+  padding: 22px;
+  border: 2px dashed rgba(0, 138, 131, 0.35);
+  border-radius: 8px;
+  background: rgba(0, 138, 131, 0.06);
+  color: var(--graphite);
+  text-align: center;
+  cursor: pointer;
+}
+
+.upload-zone input {
+  display: none;
+}
+
+.upload-zone span {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.upload-zone strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 1.05rem;
+}
+
+.template-picker {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.template-option {
+  min-height: 40px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.template-option.is-selected {
+  border-color: var(--teal);
+  background: var(--teal);
+  color: #ffffff;
+}
+
+.resume-textarea {
+  width: 100%;
+  min-height: 210px;
+  padding: 14px;
+  resize: vertical;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.55;
+}
+
+.cv-actions {
+  margin-top: 14px;
+}
+
+.cv-status {
+  margin-top: 12px;
+  font-size: 0.88rem;
+}
+
+.cv-preview-panel {
+  background: #17232d;
+}
+
+.cv-preview-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  color: #ffffff;
+}
+
+.cv-preview-toolbar span,
+.cv-preview-toolbar strong {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.cv-document {
+  min-height: 560px;
+  padding: 34px;
+  border-radius: 6px;
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.cv-document header {
+  padding-bottom: 18px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.cv-document header span {
+  color: var(--teal-dark);
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.cv-document h3 {
+  margin-top: 8px;
+  font-size: 2rem;
+}
+
+.cv-document h4 {
+  margin: 22px 0 8px;
+  color: var(--teal-dark);
+  font-size: 0.88rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cv-document p,
+.cv-document li {
+  color: #33404a;
+  font-size: 0.92rem;
+  line-height: 1.58;
+}
+
+.cv-document ul {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.template-modern header {
+  border-bottom-color: var(--teal);
+}
+
+.template-modern h3 {
+  color: var(--teal-dark);
+}
+
+.template-compact {
+  padding: 26px;
+}
+
+.template-compact h3 {
+  font-size: 1.6rem;
+}
+
+.template-compact p,
+.template-compact li {
+  font-size: 0.84rem;
+  line-height: 1.42;
+}
+
+.usage-dashboard {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.usage-card {
+  padding: 18px;
+}
+
+.usage-card strong {
+  display: block;
+  color: var(--teal-dark);
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
+.usage-card.wide strong {
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
 .timeline-section {
   background: #ffffff;
 }
@@ -1229,6 +1481,8 @@ ul {
   .section-grid,
   .lab-section,
   .performance-grid,
+  .cv-builder-head,
+  .cv-app-grid,
   .contact {
     grid-template-columns: 1fr;
   }
@@ -1282,8 +1536,27 @@ ul {
   .skill-columns,
   .highlight-list,
   .credential-grid,
-  .pipeline-board {
+  .pipeline-board,
+  .usage-dashboard {
     grid-template-columns: 1fr;
+  }
+
+  .auth-actions .btn,
+  .cv-actions .btn {
+    width: 100%;
+  }
+
+  .template-picker {
+    grid-template-columns: 1fr;
+  }
+
+  .cv-document {
+    min-height: 460px;
+    padding: 22px;
+  }
+
+  .cv-document h3 {
+    font-size: 1.45rem;
   }
 
   .performance-section {

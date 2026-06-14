@@ -29,3 +29,31 @@ Your website URL will be:
 ```text
 https://mukesh4567.github.io/
 ```
+
+## Firebase CV Builder Setup
+
+The CV Builder uses Firebase Authentication and Firestore.
+
+In Firebase Console:
+
+- Enable Authentication > Google sign-in.
+- Add authorized domains:
+  - `localhost`
+  - `mukesh4567.github.io`
+  - `portfolio.mukeshmangal.com`
+- Create Firestore Database.
+
+Deploy prototype Firestore rules:
+
+```bash
+npx -y firebase-tools@latest login
+npx -y firebase-tools@latest deploy --only firestore:rules
+```
+
+Optional Firebase Hosting deploy:
+
+```bash
+npx -y firebase-tools@latest deploy --only hosting
+```
+
+The app stores usage metadata only. Uploaded resume files and parsed resume text stay in the browser.
