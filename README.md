@@ -33,6 +33,7 @@ https://mukesh4567.github.io/
 ## Firebase CV Builder Setup
 
 The CV Builder uses Firebase Authentication and Firestore.
+Google sign-in uses redirect auth instead of popup auth so it works reliably on localhost, mobile browsers, and embedded browser contexts.
 
 In Firebase Console:
 

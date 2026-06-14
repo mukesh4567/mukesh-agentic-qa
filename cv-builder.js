@@ -2,8 +2,9 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/fireba
 import {
   GoogleAuthProvider,
   getAuth,
+  getRedirectResult,
   onAuthStateChanged,
-  signInWithPopup,
+  signInWithRedirect,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import {
@@ -101,9 +102,8 @@ function setBuilderEnabled(enabled) {
 
 elements.login?.addEventListener("click", async () => {
   try {
-    setStatus("Opening Google sign in...");
-    const result = await signInWithPopup(auth, provider);
-    await recordLogin(result.user);
+    setStatus("Redirecting to Google sign in...");
+    await signInWithRedirect(auth, provider);
   } catch (error) {
     setStatus(readableFirebaseError(error));
   }
@@ -121,6 +121,17 @@ onAuthStateChanged(auth, async (user) => {
   setSignedInUi(user);
   await ensureUserDocument(user);
 });
+
+getRedirectResult(auth)
+  .then(async (result) => {
+    if (result?.user) {
+      await recordLogin(result.user);
+      setStatus("Google sign in completed. You can upload a resume now.");
+    }
+  })
+  .catch((error) => {
+    setStatus(readableFirebaseError(error));
+  });
 
 elements.templateOptions.forEach((button) => {
   button.addEventListener("click", () => {
