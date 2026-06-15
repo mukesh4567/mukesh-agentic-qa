@@ -219,7 +219,7 @@ elements.aiEnhance?.addEventListener("click", async () => {
 
   elements.aiEnhance.disabled = true;
   elements.aiEnhance.textContent = "Enhancing...";
-  setStatus("AI agent is improving the CV content...");
+  setStatus("Free LLM is improving the CV content...");
 
   try {
     const enhancedText = await enhanceResumeWithAgent(text, prompt);
@@ -370,7 +370,73 @@ async function enhanceResumeWithAgent(text, prompt = "") {
       console.warn("Configured AI endpoint failed. Falling back to browser enhancer.", error);
     }
   }
+  const llmText = await enhanceWithFreeLlm(text, prompt);
+  if (llmText) return llmText;
   return buildLocalAgentEnhancement(text, prompt);
+}
+
+async function enhanceWithFreeLlm(text, prompt = "") {
+  const agentPrompt = buildCvAgentPrompt(text, prompt);
+  try {
+    await loadScript("https://js.puter.com/v2/");
+    if (window.puter?.ai?.chat) {
+      const result = await window.puter.ai.chat(agentPrompt);
+      const content = normalizeLlmResponse(result);
+      if (content) return content;
+    }
+  } catch (error) {
+    console.warn("Puter free LLM was not available. Trying fallback LLM.", error);
+  }
+
+  try {
+    const response = await fetch("https://text.pollinations.ai/openai", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "openai",
+        messages: [
+          { role: "system", content: "You rewrite CV content truthfully and concisely. Never invent facts." },
+          { role: "user", content: agentPrompt }
+        ],
+        temperature: 0.35
+      })
+    });
+    if (!response.ok) throw new Error("Fallback LLM failed.");
+    const data = await response.json();
+    const content = normalizeLlmResponse(data);
+    if (content) return content;
+  } catch (error) {
+    console.warn("Fallback free LLM was not available. Using browser enhancer.", error);
+  }
+
+  return "";
+}
+
+function buildCvAgentPrompt(text, prompt = "") {
+  return [
+    "Rewrite this resume into clean CV content.",
+    "Keep it ATS friendly, simple, and human sounding.",
+    "Do not invent employers, dates, tools, metrics, degrees, certifications, or achievements.",
+    "Preserve real names, companies, tools, dates, email, and phone if present.",
+    "Return plain text only with these sections: Professional Summary, Core Skills, Experience Highlights, Education & Certifications.",
+    prompt ? `User requested changes: ${prompt}` : "User requested changes: improve clarity and structure.",
+    "",
+    "Resume text:",
+    text.slice(0, 12000)
+  ].join("\n");
+}
+
+function normalizeLlmResponse(result) {
+  if (!result) return "";
+  if (typeof result === "string") return result.trim();
+  if (typeof result.message?.content === "string") return result.message.content.trim();
+  if (Array.isArray(result.choices)) {
+    const content = result.choices[0]?.message?.content || result.choices[0]?.text;
+    if (typeof content === "string") return content.trim();
+  }
+  if (typeof result.text === "string") return result.text.trim();
+  if (typeof result.content === "string") return result.content.trim();
+  return "";
 }
 
 function buildLocalAgentEnhancement(text, prompt = "") {
