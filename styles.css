@@ -704,6 +704,130 @@ p {
   font-weight: 800;
 }
 
+.value-map-section {
+  background:
+    radial-gradient(circle at 18% 20%, rgba(32, 87, 129, 0.1), transparent 28%),
+    linear-gradient(135deg, #ffffff 0%, #f3f8f7 100%);
+}
+
+.value-map-section h2 {
+  max-width: 820px;
+  font-size: clamp(2rem, 4vw, 3.4rem);
+}
+
+.value-map {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 34px;
+}
+
+.value-map::before {
+  position: absolute;
+  inset: 50% 8% auto;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 138, 131, 0.34), transparent);
+  content: "";
+}
+
+.value-map-center,
+.value-node {
+  position: relative;
+  z-index: 1;
+  min-height: 168px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 16px 44px rgba(16, 24, 32, 0.08);
+}
+
+.value-map-center {
+  display: grid;
+  place-content: center;
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  min-height: 352px;
+  border-color: rgba(0, 138, 131, 0.28);
+  background: linear-gradient(135deg, var(--teal), #205781);
+  color: #ffffff;
+  text-align: center;
+}
+
+.value-map-center span,
+.value-node span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.76rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.value-map-center span {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.value-map-center strong {
+  font-size: clamp(1.2rem, 2.3vw, 1.75rem);
+  line-height: 1.2;
+}
+
+.value-node {
+  overflow: hidden;
+}
+
+.value-node::before {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: rgba(0, 138, 131, 0.12);
+  color: var(--teal-dark);
+  display: grid;
+  place-items: center;
+  font-weight: 900;
+  content: "AI";
+}
+
+.value-node span {
+  max-width: calc(100% - 48px);
+  color: var(--teal-dark);
+}
+
+.value-node p {
+  color: var(--graphite);
+  font-size: 0.9rem;
+  line-height: 1.52;
+}
+
+.node-api { grid-column: 1; grid-row: 1; }
+.node-cloud-api { grid-column: 3; grid-row: 1; }
+.node-contracts { grid-column: 1; grid-row: 2; }
+.node-web { grid-column: 3; grid-row: 2; }
+.node-e2e { grid-column: 1; grid-row: 3; }
+.node-mobile { grid-column: 3; grid-row: 3; }
+.node-kubernetes { grid-column: 1; grid-row: 4; }
+.node-performance { grid-column: 3; grid-row: 4; }
+.node-monitoring { grid-column: 1; grid-row: 5; }
+.node-gitops { grid-column: 2; grid-row: 5; }
+.node-feedback { grid-column: 3; grid-row: 5; }
+
+.node-api::before { content: "API"; }
+.node-cloud-api::before { content: "RF"; }
+.node-contracts::before { content: "BDD"; }
+.node-web::before { content: "WEB"; }
+.node-e2e::before { content: "E2E"; }
+.node-mobile::before { content: "APP"; }
+.node-kubernetes::before { content: "K8s"; }
+.node-performance::before { content: "k6"; }
+.node-monitoring::before { content: "UI"; }
+.node-gitops::before { content: "GIT"; }
+.node-feedback::before { content: "CI"; }
+
 .performance-section {
   background: #ffffff;
 }
@@ -1238,6 +1362,26 @@ p {
   line-height: 1.4;
 }
 
+.footer-meta {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  text-align: center;
+}
+
+.visitor-count {
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.copyright {
+  max-width: 760px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
 .timeline-section {
   background: #ffffff;
 }
@@ -1529,10 +1673,35 @@ ul {
   .section-grid,
   .lab-section,
   .performance-grid,
+  .value-map,
   .cv-builder-head,
   .cv-app-grid,
   .contact {
     grid-template-columns: 1fr;
+  }
+
+  .value-map::before {
+    content: none;
+  }
+
+  .value-map-center,
+  .node-api,
+  .node-cloud-api,
+  .node-contracts,
+  .node-web,
+  .node-e2e,
+  .node-mobile,
+  .node-kubernetes,
+  .node-performance,
+  .node-monitoring,
+  .node-gitops,
+  .node-feedback {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .value-map-center {
+    min-height: 220px;
   }
 
   .lab-visual {
@@ -1610,6 +1779,25 @@ ul {
   .performance-section {
     padding-top: 56px;
     padding-bottom: 56px;
+  }
+
+  .value-map-section h2 {
+    font-size: clamp(1.85rem, 8vw, 2.85rem);
+  }
+
+  .value-map {
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .value-map-center,
+  .value-node {
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .value-node p {
+    font-size: 0.84rem;
   }
 
   .performance-copy p {

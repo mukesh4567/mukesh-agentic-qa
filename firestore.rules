@@ -45,7 +45,8 @@ service cloud.firestore {
 
     function isAdmin() {
       return isAuthenticated() &&
-        request.auth.token.email == "mukeshmangal2007@gmail.com";
+        request.auth.token.email == "mukeshmangal2007@gmail.com" &&
+        request.auth.token.email_verified == true;
     }
 
     function userFields() {
@@ -127,6 +128,23 @@ service cloud.firestore {
         isValidOptionalString(data, "fileType", 120);
     }
 
+    function isValidSiteStatsCreate(data) {
+      return data.keys().hasOnly(["totalViews", "lastViewedAt"]) &&
+        data.keys().hasAll(["totalViews", "lastViewedAt"]) &&
+        data.totalViews is int &&
+        data.totalViews == 1 &&
+        data.lastViewedAt is timestamp;
+    }
+
+    function isValidSiteStatsUpdate(data) {
+      return data.keys().hasOnly(["totalViews", "lastViewedAt"]) &&
+        data.totalViews is int &&
+        resource.data.totalViews is int &&
+        data.totalViews == resource.data.totalViews + 1 &&
+        data.totalViews <= 10000000 &&
+        data.lastViewedAt is timestamp;
+    }
+
     match /users/{userId} {
       allow get: if isOwner(userId) || isAdmin();
       allow list: if isAdmin();
@@ -139,6 +157,14 @@ service cloud.firestore {
         allow create: if isOwner(userId) && isValidEvent(userId, request.resource.data);
         allow update, delete: if false;
       }
+    }
+
+    match /siteStats/portfolio {
+      allow get: if true;
+      allow list: if false;
+      allow create: if isValidSiteStatsCreate(request.resource.data);
+      allow update: if isValidSiteStatsUpdate(request.resource.data);
+      allow delete: if false;
     }
 
     match /{document=**} {

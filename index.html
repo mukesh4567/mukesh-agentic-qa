@@ -22,7 +22,6 @@
       <a href="#lab">AI Lab</a>
       <a href="#experience">Experience</a>
       <a href="#skills">Skills</a>
-      <a href="#cv-builder">CV Builder</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -131,8 +130,8 @@
         <div class="web-window nokia-web">
           <div class="browser-top"><span></span><span></span><span></span></div>
           <div class="web-title">
-            <span>Nokia NCOM Cloud</span>
-            <strong>NOC dashboard validation</strong>
+            <span>Cloud Operations UI</span>
+            <strong>Dashboard validation</strong>
           </div>
           <div class="web-layout">
             <div class="web-sidebar"><span></span><span></span><span></span></div>
@@ -161,6 +160,72 @@
           <div class="api-row"><strong>GET</strong><span>/health/trends</span><em>200</em></div>
           <div class="api-row"><strong>AI</strong><span>root-cause summary</span><em>ready</em></div>
         </div>
+      </div>
+    </section>
+
+    <section class="section value-map-section" aria-labelledby="value-map-title">
+      <div class="section-kicker">Automation Value Mind Map</div>
+      <h2 id="value-map-title">Real automation problems solved with AI-assisted engineering.</h2>
+      <div class="value-map" aria-label="Mind map of automation value delivered to organizations">
+        <div class="value-map-center">
+          <span>Value Added</span>
+          <strong>Quality engineering that reduces manual effort and improves release confidence</strong>
+        </div>
+
+        <article class="value-node node-api">
+          <span>BFF REST Automation</span>
+          <p>Built an in-house Spring Boot automation microservice with BDD runners, quality gates, Allure reports, pass-rate signoff, and Slack owner notifications.</p>
+        </article>
+
+        <article class="value-node node-cloud-api">
+          <span>Cloud API Regression</span>
+          <p>Used Robot Framework MCP to speed up API checks for response codes, assertions, schemas, alarm data, inventory data, and backend service responses.</p>
+        </article>
+
+        <article class="value-node node-contracts">
+          <span>Requirement to Test Flow</span>
+          <p>Converted acceptance criteria, API contracts, payloads, headers, auth rules, and environment configs into feature files, test data, negative cases, and REST checks.</p>
+        </article>
+
+        <article class="value-node node-web">
+          <span>Web Journey Automation</span>
+          <p>Automated login, session expiry, OTP or token refresh, saved-card and wallet handoff, payment retry, profile validation, and order status sync flows.</p>
+        </article>
+
+        <article class="value-node node-e2e">
+          <span>UI E2E Regression</span>
+          <p>Created Playwright MCP suites for reusable components, data tables, filters, navigation, environment-based runs, email reports, and grouped failure analysis.</p>
+        </article>
+
+        <article class="value-node node-mobile">
+          <span>Mobile Flow Checks</span>
+          <p>Used emulator-driven journeys, screenshots, and screen hierarchy capture to detect login, address, booking, and payment handoff issues before release.</p>
+        </article>
+
+        <article class="value-node node-kubernetes">
+          <span>Kubernetes Diagnostics</span>
+          <p>Created repeatable Bash utilities for CR/CRD status, pod health, restarts, events, logs, and resource usage so developers received clear root-cause evidence.</p>
+        </article>
+
+        <article class="value-node node-performance">
+          <span>Performance Signals</span>
+          <p>Generated k6 checks for payment, order, search, browse, and vertical service APIs to track latency, RPS, failures, and response-time spikes.</p>
+        </article>
+
+        <article class="value-node node-monitoring">
+          <span>Monitoring UI</span>
+          <p>Built a lightweight dashboard over JMeter results for live progress, pass/fail/blocked status, CPU, memory, restarts, leaks, response time, throughput, and failed samples.</p>
+        </article>
+
+        <article class="value-node node-gitops">
+          <span>GitOps Release Checks</span>
+          <p>Used Flux, Porch, Quay, and OpenShift flows to compare image tags, config changes, project status, and rollout health before UI, API, and performance checks.</p>
+        </article>
+
+        <article class="value-node node-feedback">
+          <span>Faster Feedback</span>
+          <p>Connected CI/CD, reports, owner tagging, failure analysis, and regression packs so teams could act on test results without waiting for manual triage.</p>
+        </article>
       </div>
     </section>
 
@@ -390,7 +455,7 @@
       </div>
     </section>
 
-    <section class="section cv-builder-section" id="cv-builder" aria-labelledby="cv-builder-title">
+    <section class="section cv-builder-section" id="cv-builder" aria-labelledby="cv-builder-title" hidden>
       <div class="cv-builder-head">
         <div>
           <div class="section-kicker">Free CV Builder</div>
@@ -474,10 +539,14 @@
   </main>
 
   <footer class="footer">
-    <p>Based in New Delhi, India | Open to AI quality engineering, SDET leadership, and automation architecture roles.</p>
+    <div class="footer-meta">
+      <p class="visitor-count" data-visitor-count>Portfolio views: counting...</p>
+      <p class="copyright">© 2026 Mukesh Kumar Mangal. All rights reserved. Please do not copy or reuse portfolio content without permission.</p>
+    </div>
   </footer>
 
   <script src="script.js"></script>
   <script type="module" src="cv-builder.js"></script>
+  <script type="module" src="visitor-counter.js"></script>
 </body>
 </html>
