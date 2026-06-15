@@ -68,6 +68,26 @@
       font-weight: 700;
     }
 
+    .math-symbols {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 16px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 1.05rem;
+      font-weight: 800;
+    }
+
+    .math-symbols span {
+      display: inline-grid;
+      min-width: 34px;
+      min-height: 34px;
+      place-items: center;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
     .contact-list {
       display: flex;
       flex-wrap: wrap;
@@ -297,9 +317,16 @@
   <main class="cv-page">
     <header class="hero">
       <div>
-        <div class="eyebrow">Modern Curriculum Vitae</div>
+        <div class="eyebrow">Curriculum Vitae</div>
         <h1>Nimita Goyal</h1>
         <p class="role">Mathematics Teacher | Academic Administration | Student Support</p>
+        <div class="math-symbols" aria-label="Mathematics symbols">
+          <span>&sum;</span>
+          <span>&pi;</span>
+          <span>&radic;</span>
+          <span>&infin;</span>
+          <span>x&sup2;</span>
+        </div>
         <div class="contact-list" aria-label="Contact information">
           <span>Phone: 9971999103</span>
           <span>Email: Nimita98262@gmail.com</span>
