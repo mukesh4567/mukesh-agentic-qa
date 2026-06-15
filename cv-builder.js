@@ -4,6 +4,7 @@ import {
   getAuth,
   getRedirectResult,
   onAuthStateChanged,
+  signInWithPopup,
   signInWithRedirect,
   signOut
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
@@ -76,7 +77,7 @@ function setStatus(message) {
 function setLoginBusy(isBusy) {
   if (!elements.login) return;
   elements.login.disabled = isBusy;
-  elements.login.textContent = isBusy ? "Redirecting..." : "Sign In With Google";
+  elements.login.textContent = isBusy ? "Opening Google..." : "Sign In With Google";
 }
 
 function setSignedOutUi() {
@@ -115,17 +116,29 @@ elements.login?.addEventListener("click", async () => {
   try {
     window.clearTimeout(signInFeedbackTimer);
     setLoginBusy(true);
-    setStatus("Redirecting to Google sign in...");
+    setStatus("Opening Google sign in...");
     signInFeedbackTimer = window.setTimeout(() => {
       if (!state.currentUser && !elements.login.classList.contains("hidden")) {
         setLoginBusy(false);
-        setStatus("Google sign-in did not open. Enable Firebase Authentication, turn on Google provider, and add localhost as an authorized domain.");
+        setStatus("Google sign-in did not complete. Check that popups are allowed and localhost is an authorized Firebase domain.");
       }
     }, 7000);
-    await signInWithRedirect(auth, provider);
+    const result = await signInWithPopup(auth, provider);
+    if (result?.user) {
+      setSignedInUi(result.user);
+      recordLogin(result.user).catch((error) => {
+        console.warn("Login history was not saved.", error);
+      });
+      setStatus("Google sign in completed. You can upload a resume now.");
+    }
   } catch (error) {
     window.clearTimeout(signInFeedbackTimer);
     setLoginBusy(false);
+    if (error?.code === "auth/popup-blocked") {
+      setStatus("Popup was blocked. Redirecting to Google sign in...");
+      await signInWithRedirect(auth, provider);
+      return;
+    }
     setStatus(readableFirebaseError(error));
   }
 });
@@ -140,13 +153,20 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
   setSignedInUi(user);
-  await ensureUserDocument(user);
+  try {
+    await ensureUserDocument(user);
+  } catch (error) {
+    console.warn("User profile was not saved.", error);
+  }
 });
 
 getRedirectResult(auth)
   .then(async (result) => {
     if (result?.user) {
-      await recordLogin(result.user);
+      setSignedInUi(result.user);
+      recordLogin(result.user).catch((error) => {
+        console.warn("Login history was not saved.", error);
+      });
       setStatus("Google sign in completed. You can upload a resume now.");
     }
   })
