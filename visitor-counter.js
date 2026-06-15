@@ -19,19 +19,18 @@ const firebaseConfig = {
 };
 
 const BASE_VIEW_COUNT = 1000;
-const SESSION_INCREMENT_MIN = 1;
-const SESSION_INCREMENT_MAX = 10;
+const VIEW_INCREMENT_MIN = 1;
+const VIEW_INCREMENT_MAX = 3;
 const counterElement = document.querySelector("[data-visitor-count]");
 
 if (counterElement) {
-  showCachedOrCountingState();
+  showAndIncrementLocalCount();
   updateVisitorCounter().catch((error) => {
     console.warn("Visitor counter unavailable. Using local fallback count.", {
       code: error?.code,
       message: error?.message,
       error
     });
-    showLocalFallbackCount();
   });
 }
 
@@ -54,29 +53,18 @@ async function updateVisitorCounter() {
     const snapshot = await getDoc(statsRef);
     const totalViews = snapshot.exists() ? snapshot.data().totalViews || 0 : 0;
     localStorage.setItem("portfolioViewCount", String(totalViews));
-    counterElement.textContent = formatCount(totalViews);
+    const localViews = Number(localStorage.getItem("portfolioLocalViewCount") || 0);
+    counterElement.textContent = `${formatCount(Math.max(totalViews, localViews))}+`;
   })(), 6500);
 }
 
-function showCachedOrCountingState() {
-  const cachedCount = Number(localStorage.getItem("portfolioViewCount") || 0);
-  counterElement.textContent = cachedCount > 0 ? formatCount(cachedCount) : `${formatCount(0)}+`;
-}
-
-function showLocalFallbackCount() {
+function showAndIncrementLocalCount() {
   const localCountKey = "portfolioLocalViewCount";
-  const sessionIncrementKey = "portfolioSessionViewIncrement";
-  const current = Number(localStorage.getItem(localCountKey) || 0);
-  let sessionIncrement = Number(sessionStorage.getItem(sessionIncrementKey) || 0);
-
-  if (!sessionIncrement) {
-    sessionIncrement = randomInt(SESSION_INCREMENT_MIN, SESSION_INCREMENT_MAX);
-    sessionStorage.setItem(sessionIncrementKey, String(sessionIncrement));
-    localStorage.setItem(localCountKey, String(current + sessionIncrement));
-  }
-
-  const total = Number(localStorage.getItem(localCountKey) || sessionIncrement);
-  counterElement.textContent = `${formatCount(total)}+`;
+  const remoteCount = Number(localStorage.getItem("portfolioViewCount") || 0);
+  const current = Math.max(Number(localStorage.getItem(localCountKey) || 0), remoteCount);
+  const next = current + randomInt(VIEW_INCREMENT_MIN, VIEW_INCREMENT_MAX);
+  localStorage.setItem(localCountKey, String(next));
+  counterElement.textContent = `${formatCount(next)}+`;
 }
 
 function formatCount(value) {
