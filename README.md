@@ -33,7 +33,7 @@ https://mukesh4567.github.io/
 ## Firebase CV Builder Setup
 
 The CV Builder uses Firebase Authentication and Firestore.
-Google sign-in uses redirect auth instead of popup auth so it works reliably on localhost, mobile browsers, and embedded browser contexts.
+Google sign-in uses popup auth first, with redirect auth as a fallback when popups are blocked.
 
 In Firebase Console:
 
@@ -58,3 +58,15 @@ npx -y firebase-tools@latest deploy --only hosting
 ```
 
 The app stores usage metadata only. Uploaded resume files and parsed resume text stay in the browser.
+
+## AI CV Enhancement
+
+The CV Builder includes an AI Agent CV Enhancer. By default it uses a free in-browser enhancement flow, so the feature works without exposing any API key.
+
+To connect a GPT-compatible free/local service later, expose your LLM through a small backend endpoint and set this in the browser console:
+
+```js
+localStorage.setItem("cvAiEndpoint", "https://your-backend.example.com/api/enhance-cv");
+```
+
+The endpoint should accept `resumeText` and return JSON with `enhancedText`. Do not place OpenAI, Gemini, or other LLM API keys directly inside `cv-builder.js`.

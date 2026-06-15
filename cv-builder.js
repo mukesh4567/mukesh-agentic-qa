@@ -44,6 +44,7 @@ const elements = {
   upload: document.querySelector("[data-resume-upload]"),
   uploadFile: document.querySelector("[data-upload-file]"),
   resumeText: document.querySelector("[data-resume-text]"),
+  aiEnhance: document.querySelector("[data-ai-enhance-cv]"),
   generate: document.querySelector("[data-generate-cv]"),
   downloadPdf: document.querySelector("[data-download-cv]"),
   downloadHtml: document.querySelector("[data-download-html]"),
@@ -107,7 +108,7 @@ function setSignedInUi(user) {
 }
 
 function setBuilderEnabled(enabled) {
-  [elements.upload, elements.resumeText, elements.generate].forEach((element) => {
+  [elements.upload, elements.resumeText, elements.aiEnhance, elements.generate].forEach((element) => {
     if (element) element.disabled = !enabled;
   });
 }
@@ -202,6 +203,39 @@ elements.upload?.addEventListener("change", async (event) => {
 });
 
 elements.resumeText?.addEventListener("input", updateWordCount);
+
+elements.aiEnhance?.addEventListener("click", async () => {
+  const text = elements.resumeText.value.trim();
+  if (!state.currentUser) {
+    setStatus("Please sign in first.");
+    return;
+  }
+  if (!text) {
+    setStatus("Upload a resume or paste content before using AI enhance.");
+    return;
+  }
+
+  elements.aiEnhance.disabled = true;
+  elements.aiEnhance.textContent = "Enhancing...";
+  setStatus("AI agent is improving the CV content...");
+
+  try {
+    const enhancedText = await enhanceResumeWithAgent(text);
+    elements.resumeText.value = enhancedText;
+    updateWordCount();
+    state.generatedHtml = buildCvHtml(enhancedText);
+    renderCv(state.generatedHtml);
+    elements.downloadPdf.disabled = false;
+    elements.downloadHtml.disabled = false;
+    setStatus("AI enhanced CV is ready. Review it, then download or edit.");
+    await recordUsage("ai_enhance", { template: state.selectedTemplate, fileType: state.uploadedFileType });
+  } catch (error) {
+    setStatus(error.message || "AI enhance could not complete. You can still generate the CV normally.");
+  } finally {
+    elements.aiEnhance.disabled = false;
+    elements.aiEnhance.textContent = "AI Enhance CV";
+  }
+});
 
 elements.generate?.addEventListener("click", async () => {
   const text = elements.resumeText.value.trim();
@@ -310,6 +344,79 @@ function buildCvHtml(text) {
     ${renderListSection("Experience Highlights", experience)}
     ${renderListSection("Education & Certifications", education)}
   `;
+}
+
+async function enhanceResumeWithAgent(text) {
+  const endpoint = localStorage.getItem("cvAiEndpoint");
+  if (endpoint) {
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          task: "rewrite_cv",
+          instructions: "Create concise, truthful CV content. Do not invent employers, dates, tools, metrics, degrees, or certifications. Keep it ATS friendly.",
+          resumeText: text
+        })
+      });
+      if (!response.ok) throw new Error("AI endpoint failed.");
+      const data = await response.json();
+      if (data?.enhancedText) return data.enhancedText.trim();
+      if (data?.text) return data.text.trim();
+    } catch (error) {
+      console.warn("Configured AI endpoint failed. Falling back to browser enhancer.", error);
+    }
+  }
+  return buildLocalAgentEnhancement(text);
+}
+
+function buildLocalAgentEnhancement(text) {
+  const lines = text.split(/\n+/).map((line) => cleanResumeLine(line)).filter(Boolean);
+  const name = findName(lines);
+  const email = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)?.[0] || "";
+  const phone = text.match(/(?:\+?\d[\d\s().-]{7,}\d)/)?.[0] || "";
+  const skills = collectLines(lines, ["skill", "tool", "technology", "automation", "testing", "api", "playwright", "selenium", "jmeter", "k6", "jenkins", "git"], 10);
+  const experience = collectLines(lines, ["experience", "project", "work", "engineer", "lead", "consultant", "automation", "quality", "testing"], 14);
+  const education = collectLines(lines, ["education", "degree", "university", "institute", "certification", "bca", "mca"], 6);
+  const summarySource = lines.filter((line) => line !== name && line !== email && line !== phone).slice(0, 6).join(" ");
+  const summary = summarizeForCv(summarySource);
+
+  return [
+    name,
+    [email, phone].filter(Boolean).join(" | "),
+    "",
+    "Professional Summary",
+    summary,
+    "",
+    "Core Skills",
+    ...formatAgentBullets(skills, "Skilled in"),
+    "",
+    "Experience Highlights",
+    ...formatAgentBullets(experience, "Worked on"),
+    "",
+    "Education & Certifications",
+    ...formatAgentBullets(education, "Completed")
+  ].filter((line, index, list) => line || list[index - 1]).join("\n");
+}
+
+function summarizeForCv(text) {
+  const compact = cleanResumeLine(text).slice(0, 420);
+  if (!compact) return "Quality-focused professional with experience across automation, delivery, and engineering collaboration.";
+  return compact.endsWith(".") ? compact : `${compact}.`;
+}
+
+function formatAgentBullets(items, prefix) {
+  const cleanItems = items.map((item) => cleanResumeLine(item)).filter(Boolean).slice(0, 8);
+  if (!cleanItems.length) return [`- ${prefix} relevant responsibilities and outcomes from the uploaded resume.`];
+  return cleanItems.map((item) => {
+    const withoutBullet = item.replace(/^[-*•\d.)\s]+/, "");
+    const sentence = withoutBullet.endsWith(".") ? withoutBullet : `${withoutBullet}.`;
+    return `- ${sentence}`;
+  });
+}
+
+function cleanResumeLine(value = "") {
+  return value.replace(/\s+/g, " ").replace(/[•]+/g, "-").trim();
 }
 
 function renderCv(html) {

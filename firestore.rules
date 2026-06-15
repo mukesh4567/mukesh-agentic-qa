@@ -26,7 +26,7 @@ service cloud.firestore {
   // Fields:
   //   - uid: string (required, immutable) - Firebase Auth uid
   //   - email: string (required) - signed-in user email
-  //   - type: string (required) - login/generate/download_html/download_pdf
+  //   - type: string (required) - login/ai_enhance/generate/download_html/download_pdf
   //   - createdAt: timestamp (required) - event timestamp
   //   - template: string (optional) - selected CV template
   //   - fileType: string (optional) - uploaded file MIME/extension
@@ -122,7 +122,7 @@ service cloud.firestore {
         data.uid == userId &&
         data.uid == request.auth.uid &&
         data.email == request.auth.token.email &&
-        data.type in ["login", "generate", "download_html", "download_pdf"] &&
+        data.type in ["login", "ai_enhance", "generate", "download_html", "download_pdf"] &&
         isValidOptionalString(data, "template", 40) &&
         isValidOptionalString(data, "fileType", 120);
     }
