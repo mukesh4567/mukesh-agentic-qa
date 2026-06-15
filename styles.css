@@ -100,6 +100,7 @@ a {
   display: grid;
   align-items: center;
   overflow: hidden;
+  background: #101820 url("hero-quality-engineering.png") center / cover no-repeat;
   color: #ffffff;
 }
 
@@ -118,8 +119,8 @@ a {
 
 .hero-overlay {
   background:
-    linear-gradient(90deg, rgba(9, 16, 22, 0.94) 0%, rgba(9, 16, 22, 0.76) 42%, rgba(9, 16, 22, 0.22) 100%),
-    linear-gradient(180deg, rgba(9, 16, 22, 0.38) 0%, rgba(9, 16, 22, 0.74) 100%);
+    linear-gradient(90deg, rgba(9, 16, 22, 0.92) 0%, rgba(9, 16, 22, 0.68) 42%, rgba(9, 16, 22, 0.1) 100%),
+    linear-gradient(180deg, rgba(9, 16, 22, 0.22) 0%, rgba(9, 16, 22, 0.62) 100%);
 }
 
 .hero-content {
