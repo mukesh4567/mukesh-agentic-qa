@@ -44,6 +44,7 @@ const elements = {
   upload: document.querySelector("[data-resume-upload]"),
   uploadFile: document.querySelector("[data-upload-file]"),
   resumeText: document.querySelector("[data-resume-text]"),
+  aiPrompt: document.querySelector("[data-ai-prompt]"),
   aiEnhance: document.querySelector("[data-ai-enhance-cv]"),
   generate: document.querySelector("[data-generate-cv]"),
   downloadPdf: document.querySelector("[data-download-cv]"),
@@ -108,7 +109,7 @@ function setSignedInUi(user) {
 }
 
 function setBuilderEnabled(enabled) {
-  [elements.upload, elements.resumeText, elements.aiEnhance, elements.generate].forEach((element) => {
+  [elements.upload, elements.resumeText, elements.aiPrompt, elements.aiEnhance, elements.generate].forEach((element) => {
     if (element) element.disabled = !enabled;
   });
 }
@@ -206,6 +207,7 @@ elements.resumeText?.addEventListener("input", updateWordCount);
 
 elements.aiEnhance?.addEventListener("click", async () => {
   const text = elements.resumeText.value.trim();
+  const prompt = elements.aiPrompt?.value.trim() || "";
   if (!state.currentUser) {
     setStatus("Please sign in first.");
     return;
@@ -220,7 +222,7 @@ elements.aiEnhance?.addEventListener("click", async () => {
   setStatus("AI agent is improving the CV content...");
 
   try {
-    const enhancedText = await enhanceResumeWithAgent(text);
+    const enhancedText = await enhanceResumeWithAgent(text, prompt);
     elements.resumeText.value = enhancedText;
     updateWordCount();
     state.generatedHtml = buildCvHtml(enhancedText);
@@ -346,7 +348,7 @@ function buildCvHtml(text) {
   `;
 }
 
-async function enhanceResumeWithAgent(text) {
+async function enhanceResumeWithAgent(text, prompt = "") {
   const endpoint = localStorage.getItem("cvAiEndpoint");
   if (endpoint) {
     try {
@@ -356,6 +358,7 @@ async function enhanceResumeWithAgent(text) {
         body: JSON.stringify({
           task: "rewrite_cv",
           instructions: "Create concise, truthful CV content. Do not invent employers, dates, tools, metrics, degrees, or certifications. Keep it ATS friendly.",
+          userPrompt: prompt,
           resumeText: text
         })
       });
@@ -367,11 +370,12 @@ async function enhanceResumeWithAgent(text) {
       console.warn("Configured AI endpoint failed. Falling back to browser enhancer.", error);
     }
   }
-  return buildLocalAgentEnhancement(text);
+  return buildLocalAgentEnhancement(text, prompt);
 }
 
-function buildLocalAgentEnhancement(text) {
+function buildLocalAgentEnhancement(text, prompt = "") {
   const lines = text.split(/\n+/).map((line) => cleanResumeLine(line)).filter(Boolean);
+  const promptLine = cleanResumeLine(prompt);
   const name = findName(lines);
   const email = text.match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i)?.[0] || "";
   const phone = text.match(/(?:\+?\d[\d\s().-]{7,}\d)/)?.[0] || "";
@@ -387,6 +391,7 @@ function buildLocalAgentEnhancement(text) {
     "",
     "Professional Summary",
     summary,
+    ...(promptLine ? ["", "Requested Changes", `- ${promptLine}`] : []),
     "",
     "Core Skills",
     ...formatAgentBullets(skills, "Skilled in"),
