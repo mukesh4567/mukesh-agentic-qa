@@ -435,6 +435,9 @@ function titleCase(value = "") {
 }
 
 function readableFirebaseError(error) {
+  if (error?.code === "auth/configuration-not-found") {
+    return "Firebase Authentication is not enabled yet. In Firebase Console, open Authentication, click Get started, then enable Google sign-in.";
+  }
   if (error?.code === "auth/unauthorized-domain") {
     return "This domain is not authorized in Firebase Authentication. Add localhost and your live domain in Firebase Console.";
   }
