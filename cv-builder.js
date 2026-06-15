@@ -47,6 +47,7 @@ const elements = {
   downloadPdf: document.querySelector("[data-download-cv]"),
   downloadHtml: document.querySelector("[data-download-html]"),
   status: document.querySelector("[data-cv-status]"),
+  authMessage: document.querySelector("[data-auth-message]"),
   preview: document.querySelector("[data-cv-preview]"),
   templateLabel: document.querySelector("[data-cv-template-label]"),
   wordCount: document.querySelector("[data-cv-word-count]"),
@@ -65,13 +66,23 @@ const state = {
   generatedHtml: ""
 };
 
+let signInFeedbackTimer;
+
 function setStatus(message) {
   if (elements.status) elements.status.textContent = message;
+  if (elements.authMessage) elements.authMessage.textContent = message;
+}
+
+function setLoginBusy(isBusy) {
+  if (!elements.login) return;
+  elements.login.disabled = isBusy;
+  elements.login.textContent = isBusy ? "Redirecting..." : "Sign In With Google";
 }
 
 function setSignedOutUi() {
   state.currentUser = null;
   elements.authUser.innerHTML = "<span>Sign in required</span><strong>Google or Gmail account</strong>";
+  setLoginBusy(false);
   elements.login.classList.remove("hidden");
   elements.logout.classList.add("hidden");
   setBuilderEnabled(false);
@@ -102,9 +113,19 @@ function setBuilderEnabled(enabled) {
 
 elements.login?.addEventListener("click", async () => {
   try {
+    window.clearTimeout(signInFeedbackTimer);
+    setLoginBusy(true);
     setStatus("Redirecting to Google sign in...");
+    signInFeedbackTimer = window.setTimeout(() => {
+      if (!state.currentUser && !elements.login.classList.contains("hidden")) {
+        setLoginBusy(false);
+        setStatus("Google sign-in did not open. Enable Firebase Authentication, turn on Google provider, and add localhost as an authorized domain.");
+      }
+    }, 7000);
     await signInWithRedirect(auth, provider);
   } catch (error) {
+    window.clearTimeout(signInFeedbackTimer);
+    setLoginBusy(false);
     setStatus(readableFirebaseError(error));
   }
 });
